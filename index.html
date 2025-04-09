@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reveal Image Effects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; 
+        }
+        body {
+            overflow: hidden;
+            background: url(rk.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .container .box {
+            position: relative;
+            top: 0;
+            width: 3.33vw;
+            height: 3.33vw;
+            background: url(moon.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;        
+            border: 1px solid #000;
+            box-sizing: border-box;
+        }
+        .container .box.active {
+            background: #ff0;
+            z-index: 1;
+            pointer-events: none;
+            animation: animate 1s linear forwards;
+        }
+        @keyframes animate {
+            0% {
+                opacity: 1;
+                transform: translate(0px, 0px) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) rotate(720deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+        let container = document.querySelector('.container');
+        let count = 1000;
+        for (let i = 0; i < count; i++) {
+            let box = document.createElement('div');
+            box.className = "box";
+            container.appendChild(box);
+        }
+
+        let boxes = document.querySelectorAll('.box');
+
+        function getRandomValue() {
+            return `${Math.random() * 2000 - 1000}px`;
+        }
+
+        boxes.forEach(box => {
+            box.addEventListener('mouseover', () => {
+                box.classList.add('active');
+                box.style.setProperty('--x', getRandomValue());
+                box.style.setProperty('--y', getRandomValue());
+
+                let angleValue = Math.random() * 360;
+                box.style.filter = `hue-rotate(${angleValue}deg)`;
+            });
+        });
+    </script>
+</body>
+</html>
